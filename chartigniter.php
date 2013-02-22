@@ -110,18 +110,6 @@ class Chartigniter
 			default: return false; break;
 		}
 	}
-	
-	
-	/*public function render($get)
-	{
-		switch($get)
-		{
-			case 'graph': $this->foot.= '<div id="'.$this->options['chart']['renderTo'].'"></div>';
-						  $this->body = json_encode($this->options);
-						  return $this->head.$this->body.$this->foot; break;
-			default: return false; break;
-		}
-	}*/
 
 
 }
