@@ -55,6 +55,8 @@ class Chartigniter
 												'backgroundColor' => null));
 	}
 
+	private $event = '';
+
 
 	/**
 	 * Magische Methode. Nimmt alle Einstellungsaufrufe auf und speichert sie in die Klassenvariable
@@ -94,22 +96,52 @@ class Chartigniter
 	}
 
 	/**
-	 * Magische get-Methode. Holt bisher nur den erzeugten Javascript/HTML-Code zum
-	 * Darstellen des Graphen mit Hilfe von $this->graph, ansonsten kommt false zurück
+	 * Magische get-Methode.
 	 *
 	 * @param string $get
-	 * @return mixed
+	 * @return null
 	 */
 	public function __get($get)
 	{
-		switch($get)
-		{
-			case 'graph': $this->foot.= '<div id="'.$this->options['chart']['renderTo'].'"></div>';
-						  $this->body = json_encode($this->options);
-						  return $this->head.$this->body.$this->foot; break;
-			default: return false; break;
-		}
+		return;
 	}
+
+	/**
+	 * Render-Methode. Wandelt alle Einstellungen in JSON um, setzt den Javascript-Code
+	 * String zusammen und gibt diesen komplett zurück.
+	 *
+	 * @return string
+	 */
+	public function render()
+	{
+		$this->foot.= '<div id="'.$this->options['chart']['renderTo'].'"></div>';
+		$this->body = json_encode($this->options);
+
+		$render = $this->head.$this->body.$this->foot;
+
+		$this->reset();
+
+		return $render;
+	}
+
+	/**
+	 * Reset-Methode - Setzt nach dem Rendern eines Graphen alle Klassenvariablen zurück,
+	 * sodass zur Laufzeit problemlos mehrere Graphen mit einer Instanz erzeugt werden können.
+	 *
+	 * @return null
+	 */
+	private function reset()
+	{
+		$this->options = array('chart' => array('renderTo' => 'container',
+												'backgroundColor' => null));
+		$this->body = "";
+
+		return;
+	}
+
+
+
+
 
 
 }
