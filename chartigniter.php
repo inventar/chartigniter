@@ -110,9 +110,4 @@ class Chartigniter
 			default: return false; break;
 		}
 	}
-	
-	
-
-
-
 }
