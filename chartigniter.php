@@ -1,13 +1,13 @@
 <?php
-
 /**
  * PHP-Klasse zum erzeugen von Highcharts-Graphen ohne selbst Javascript verwenden zu müssen.
- * Setzt allerdings die eingebundene Highcharts-Javascript bibliothek voraus
+ * !!! Setzt allerdings die eingebundene Highcharts-Javascript bibliothek voraus !!!
  *
- * --> http://www.highcharts.com/
+ * http://www.highcharts.com/
  *
  * @author Sebastian Koine <sebkoine@gmail.com>
  * @version 1.0 2013-02-21
+ * @version 1.1 2013-02-22 - Events können verwendet werden
  *
  */
 class Chartigniter
@@ -18,9 +18,7 @@ class Chartigniter
 	 *
 	 * @var string
 	 */
-	private $head = "<script type='text/javascript'>
-					 var chart;
-					 chart = new Highcharts.Chart(";
+	private $head = "<script type='text/javascript'>var chart;chart = new Highcharts.Chart(";
 
 	/**
 	 * Erstellter Inhalt, wird im JSON-Format hier gespeichert und zwischen
@@ -38,6 +36,13 @@ class Chartigniter
 	private $foot = ");</script>";
 
 	/**
+	 * Speichert den JS-Code aus gefundenen Events zwischen
+	 *
+	 * @var array
+	 */
+	private $events = array();
+
+	/**
 	 * Alle Einstellungen bezüglich des Graphen werden hier als Array gesammelt und Später
 	 * in JSON kodiert, damit es durch Javascript ausführbar wird. Alle Einstellungsmöglichkeiten
 	 * sind der Highcharts-Dokumentation zu entnehmen (http://api.highcharts.com)
@@ -51,12 +56,8 @@ class Chartigniter
 
 	public function __construct()
 	{
-		$this->options = array('chart' => array('renderTo' => 'container',
-												'backgroundColor' => null));
+		$this->options = array('chart' => array('renderTo' => 'container', 'backgroundColor' => null));
 	}
-
-	private $events = array();
-
 
 	/**
 	 * Magische Methode. Nimmt alle Einstellungsaufrufe auf und speichert sie in die Klassenvariable
@@ -164,9 +165,7 @@ class Chartigniter
 							$this->options['plotOptions'][$plot]['events'][$trigger] = '%'.$plot.'_'.$trigger.'%';
 						}
 					}
-
 				}
-
 			}
 			return true;
 		}
@@ -188,10 +187,8 @@ class Chartigniter
 					}
 				}
 			}
-
 			return true;
 		}
-
 		return false;
 	}
 
@@ -203,14 +200,11 @@ class Chartigniter
 	 */
 	private function reset()
 	{
-		$this->options = array('chart' => array('renderTo' => 'container',
-												'backgroundColor' => null));
-
-		$this->events = array();
-
 		$this->body = "";
+		$this->events = array();
+		$this->options = array('chart' => array('renderTo' => 'container', 'backgroundColor' => null));
 
-		return;
+		return null;
 	}
 
 }
