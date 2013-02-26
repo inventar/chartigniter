@@ -23,6 +23,10 @@ class Chartigniter
 	private $aEncodeKeys = array();
 	
 	private $aOriginalKeys = array();
+	
+	private $aGermanChar = array("Ä", "ä", "Ö", "ö", "Ü", "ü", "ß");
+	
+	private $aGermanCharAscii = array("&Auml;", "&auml;", "&Ouml;", "&ouml;", "&Uuml;", "&uuml;", "&szlig;");
 
 	/**
 	 * Alle Einstellungen bezüglich des Graphen werden hier als Array gesammelt und Später
@@ -124,6 +128,7 @@ class Chartigniter
 	{
 		$options = preg_replace('(\\\)', '', json_encode($options));
 		$options = str_replace($this->aEncodeKeys, $this->aOriginalKeys, $options);
+		$options = str_replace($this->aGermanCharAscii, $this->aGermanChar, $options);
 		return preg_replace('[^u]', '', $options);
 	}
 	
@@ -185,6 +190,10 @@ class Chartigniter
 			$this->aOriginalKeys[] = $string;
 			$string = '$$' . $string . '$$';
 			$this->aEncodeKeys[] = '"' . $string . '"';
+		}
+		else
+		{
+			$string = str_replace($this->aGermanChar, $this->aGermanCharAscii, $string);
 		}
 		return $string;
 	}
